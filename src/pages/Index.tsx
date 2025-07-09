@@ -33,70 +33,15 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const games = [
-    { id: "cs2", name: "CS2", items: 1247 },
-    { id: "dota2", name: "Dota 2", items: 892 },
-    { id: "roblox", name: "Roblox", items: 2341 },
-    { id: "tf2", name: "TF2", items: 456 },
-    { id: "rust", name: "Rust", items: 234 },
-    { id: "pubg", name: "PUBG", items: 123 },
+    { id: "cs2", name: "CS2", items: 0 },
+    { id: "dota2", name: "Dota 2", items: 0 },
+    { id: "roblox", name: "Roblox", items: 0 },
+    { id: "tf2", name: "TF2", items: 0 },
+    { id: "rust", name: "Rust", items: 0 },
+    { id: "pubg", name: "PUBG", items: 0 },
   ];
 
-  const featuredItems = [
-    {
-      id: 1,
-      name: "AK-47 Redline",
-      game: "CS2",
-      price: 1250,
-      seller: "ProGamer123",
-      condition: "Field-Tested",
-      image: "/img/c6ae61c8-e86b-45dd-b165-51e3d6c89900.jpg",
-    },
-    {
-      id: 2,
-      name: "Pudge Hook Immortal",
-      game: "Dota 2",
-      price: 890,
-      seller: "DotaKing",
-      condition: "Immortal",
-      image: "/img/c6ae61c8-e86b-45dd-b165-51e3d6c89900.jpg",
-    },
-    {
-      id: 3,
-      name: "Dominus Crown",
-      game: "Roblox",
-      price: 15000,
-      seller: "RobuxTrader",
-      condition: "Limited",
-      image: "/img/c6ae61c8-e86b-45dd-b165-51e3d6c89900.jpg",
-    },
-    {
-      id: 4,
-      name: "AWP Dragon Lore",
-      game: "CS2",
-      price: 3500,
-      seller: "SnipeElite",
-      condition: "Factory New",
-      image: "/img/c6ae61c8-e86b-45dd-b165-51e3d6c89900.jpg",
-    },
-    {
-      id: 5,
-      name: "Arcana PA",
-      game: "Dota 2",
-      price: 2100,
-      seller: "ArcanaLord",
-      condition: "Immortal",
-      image: "/img/c6ae61c8-e86b-45dd-b165-51e3d6c89900.jpg",
-    },
-    {
-      id: 6,
-      name: "Korblox Deathspeaker",
-      game: "Roblox",
-      price: 17000,
-      seller: "LimitedCollector",
-      condition: "Limited",
-      image: "/img/c6ae61c8-e86b-45dd-b165-51e3d6c89900.jpg",
-    },
-  ];
+  const featuredItems = []; // Товары создают только пользователи биржи
 
   const filteredItems = featuredItems.filter((item) => {
     const matchesGame =
@@ -301,63 +246,85 @@ const Index = () => {
         {/* Featured Items */}
         <div className="mb-8">
           <h3 className="text-2xl font-bold text-white mb-6">
-            Популярные предметы
+            Торговая площадка
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.map((item) => (
-              <Card
-                key={item.id}
-                className="bg-[#16213E] border-gray-600 hover:border-[#E94560] transition-all hover:scale-105"
-              >
-                <CardHeader className="pb-3">
-                  <div className="aspect-video bg-gradient-to-br from-[#1A1A2E] to-[#16213E] rounded-lg mb-3 flex items-center justify-center">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
+          {filteredItems.length === 0 ? (
+            <Card className="bg-[#16213E] border-gray-600">
+              <CardContent className="p-12 text-center">
+                <Icon
+                  name="Package"
+                  className="text-gray-400 mx-auto mb-4"
+                  size={64}
+                />
+                <h4 className="text-xl font-semibold text-white mb-2">
+                  Пока здесь пусто
+                </h4>
+                <p className="text-gray-400 mb-6">
+                  Товары на биржу добавляют только зарегистрированные
+                  пользователи
+                </p>
+                <div className="space-y-2 text-sm text-gray-300">
+                  <p>🎮 Выставляйте предметы из любимых игр</p>
+                  <p>💰 Покупайте и продавайте без комиссий</p>
+                  <p>🔒 Безопасные сделки между игроками</p>
+                </div>
+                {!isLoggedIn && (
+                  <div className="mt-6">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className="bg-[#E94560] hover:bg-[#E94560]/80">
+                          Зарегистрироваться и начать торговать
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-[#16213E] border-gray-600">
+                        <DialogHeader>
+                          <DialogTitle className="text-white">
+                            Регистрация
+                          </DialogTitle>
+                          <DialogDescription className="text-gray-400">
+                            Создайте аккаунт, чтобы торговать игровыми
+                            предметами
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <Input
+                            placeholder="Email"
+                            className="bg-[#1A1A2E] border-gray-600 text-white"
+                          />
+                          <Input
+                            placeholder="Никнейм"
+                            className="bg-[#1A1A2E] border-gray-600 text-white"
+                          />
+                          <Input
+                            type="password"
+                            placeholder="Пароль"
+                            className="bg-[#1A1A2E] border-gray-600 text-white"
+                          />
+                          <Button
+                            className="w-full bg-[#E94560] hover:bg-[#E94560]/80"
+                            onClick={() => setIsLoggedIn(true)}
+                          >
+                            Зарегистрироваться
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                   </div>
-                  <CardTitle className="text-white text-lg">
-                    {item.name}
-                  </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    {item.condition}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between mb-3">
-                    <Badge
-                      variant="outline"
-                      className="border-[#E94560] text-[#E94560]"
-                    >
-                      {item.game}
-                    </Badge>
-                    <span className="text-2xl font-bold text-[#E94560]">
-                      {item.price}₽
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-2">
-                      <Icon name="User" size={16} className="text-gray-400" />
-                      <span className="text-gray-300 text-sm">
-                        {item.seller}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Icon name="Star" size={16} className="text-yellow-500" />
-                      <span className="text-gray-300 text-sm">4.8</span>
-                    </div>
-                  </div>
-                  <Button
-                    className="w-full bg-[#E94560] hover:bg-[#E94560]/80"
-                    disabled={!isLoggedIn}
-                  >
-                    {isLoggedIn ? "Купить" : "Войдите для покупки"}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                )}
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredItems.map((item) => (
+                <Card
+                  key={item.id}
+                  className="bg-[#16213E] border-gray-600 hover:border-[#E94560] transition-all hover:scale-105"
+                >
+                  {/* Здесь будут реальные товары от пользователей */}
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Stats Section */}
